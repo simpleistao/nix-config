@@ -4,17 +4,18 @@
   home.stateVersion = "24.11";
 
   home.packages = with pkgs; [
-    go
-    python3
-    gopls
-    pyright
-    nodejs
-    gh
-    wslu
-    ripgrep
+    docker
     fd
-    htop
     fzf
+    gh
+    go
+    gopls
+    htop
+    nodejs
+    pyright
+    python3
+    ripgrep
+    wslu
   ];
 
   programs.home-manager.enable = true;
@@ -23,6 +24,15 @@
   programs.git = {
     enable = true;
     settings = {
+      alias = {
+        s = "status";
+        st = "status";
+        co = "checkout";
+        br = "branch";
+        ci = "commit";
+        last = "log -1 HEAD";
+        unstage = "reset HEAD --";
+      };
       user = {
         name = "simpleistao";
         email = "simpleistao@gmail.com";
@@ -42,6 +52,10 @@
     enable = true;
     shellAliases = {
       sl = "readlink -f";
+      hms = "home-manager switch --flake ~/.config/home-manager --impure";
+      g = "git";
+      ll = "ls -lah";
+      nv = "nvim";
     };
   };
 

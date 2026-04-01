@@ -11,6 +11,33 @@ cd ~/.config/home-manager
 home-manager switch --flake . --impure
 ```
 
+## 💻 Setup on a New Machine
+
+Follow these steps to replicate this environment on a fresh install:
+
+1. **Install Nix**:
+   ```bash
+   sh <(curl -L https://nixos.org/nix/install) --daemon
+   ```
+
+2. **Enable Flakes**:
+   Ensure `~/.config/nix/nix.conf` contains:
+   ```text
+   experimental-features = nix-command flakes
+   ```
+
+3. **Clone this Repository**:
+   ```bash
+   git clone https://github.com/simpleistao/nix-config.git ~/.config/home-manager
+   ```
+
+4. **Bootstrap Home Manager**:
+   Run the initial switch to install everything:
+   ```bash
+   cd ~/.config/home-manager
+   nix run github:nix-community/home-manager -- switch --flake . --impure -b backup
+   ```
+
 ## 📂 Structure
 
 - `flake.nix`: Defines the software sources (Nixpkgs, Home Manager, NixVim).
@@ -30,6 +57,8 @@ home-manager switch --flake . --impure
 - `fzf`: Fuzzy finder
 - `htop`: Interactive process viewer
 - `git`: Version control (configured in `home.nix`)
+- `gh`: GitHub CLI
+- `wslu`: WSL integration (browser opening, etc.)
 
 ## ✍️ Neovim (NixVim)
 
@@ -58,4 +87,4 @@ nix-collect-garbage -d
 
 1. Search for a package at [search.nixos.org](https://search.nixos.org/packages).
 2. Add the package name to the `home.packages` list in `home.nix`.
-3. Run the `home-manager switch` command shown above.
+3. Run the `home-manager switch` command shown above (or use the `hms` alias).

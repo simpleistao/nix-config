@@ -54,6 +54,7 @@
       sl = "readlink -f";
       hms = "home-manager switch --flake ~/.config/home-manager --impure";
       g = "git";
+      gp = "git push -u origin main";
       ll = "ls -lah";
       nv = "nvim";
     };

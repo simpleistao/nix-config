@@ -9,6 +9,8 @@
     gopls
     pyright
     nodejs
+    gh
+    wslu
     ripgrep
     fd
     htop
@@ -28,6 +30,9 @@
       init = {
         defaultBranch = "main";
       };
+      # Use gh as the credential helper for GitHub
+      credential."https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential";
+      credential."https://gist.github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential";
     };
     signing.format = "openpgp";
   };

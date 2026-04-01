@@ -1,0 +1,7 @@
+# Nix/Home Manager Gitignore
+result
+result-*
+.direnv/
+node_modules/
+.DS_Store
+*.swp

@@ -3,6 +3,10 @@
   home.homeDirectory = "/home/tomzhi";
   home.stateVersion = "24.11";
 
+  imports = [
+    ./nvim
+  ];
+
   home.packages = with pkgs; [
     docker
     fd
@@ -12,6 +16,7 @@
     gopls
     htop
     nodejs
+    opencode
     pyright
     python3
     ripgrep
@@ -24,7 +29,13 @@
   programs.git = {
     enable = true;
     settings = {
+      diff.tool = "nvimdiff";
+      difftool.prompt = false; # Optional: skips the "Launch nvimdiff?" prompt
+      "difftool \"nvimdiff\"" = {
+      cmd = "nvim -d \"$LOCAL\" \"$REMOTE\"";
+      };
       alias = {
+        d = "difftool";
         s = "status";
         st = "status";
         co = "checkout";
@@ -57,62 +68,6 @@
       gp = "git push -u origin main";
       ll = "ls -lah";
       nv = "nvim";
-    };
-  };
-
-  # Neovim (NixVim) Configuration
-  programs.nixvim = {
-    enable = true;
-    defaultEditor = true; # Makes 'nvim' your default editor ($EDITOR)
-
-    opts = {
-      number = true;
-      relativenumber = true;
-      shiftwidth = 4;
-      tabstop = 4;
-      expandtab = true;
-      smartindent = true;
-      termguicolors = true;
-    };
-
-    colorschemes.tokyonight.enable = true;
-
-    globals.mapleader = " ";
-
-    plugins = {
-      lualine.enable = true;
-      treesitter.enable = true;
-
-      cmp = {
-        enable = true;
-        autoEnableSources = true;
-        settings = {
-          mapping = {
-            "<C-Space>" = "cmp.mapping.complete()";
-            "<CR>" = "cmp.mapping.confirm({ select = true })";
-            "<Tab>" = "cmp.mapping.select_next_item()";
-            "<S-Tab>" = "cmp.mapping.select_prev_item()";
-          };
-          sources = [
-            { name = "nvim_lsp"; }
-            { name = "buffer"; }
-          ];
-        };
-      };
-
-      lsp = {
-        enable = true;
-        servers = {
-          gopls.enable = true;
-          pyright.enable = true;
-        };
-        keymaps.lspBuf = {
-          gd = "definition";
-          K = "hover";
-          "<leader>rn" = "rename";
-          "<leader>ca" = "code_action";
-        };
-      };
     };
   };
 }

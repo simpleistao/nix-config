@@ -8,9 +8,10 @@
     expandtab = true;
     smartindent = true;
     termguicolors = true;
+    autochdir = true;
   };
 
   programs.nixvim.colorschemes.tokyonight.enable = true;
 
-  programs.nixvim.globals.mapleader = " ";
+  programs.nixvim.globals.mapleader = "\\";
 }

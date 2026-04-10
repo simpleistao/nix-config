@@ -64,6 +64,9 @@
   # Bash Configuration
   programs.bash = {
     enable = true;
+    initExtra = ''
+      export PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    '';
     shellAliases = {
       sl = "readlink -f";
       hms = "home-manager switch --flake ~/.config/home-manager --impure";

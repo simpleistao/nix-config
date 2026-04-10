@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  programs.nixvim.plugins.web-devicons.enable = true;
+
   programs.nixvim.plugins.telescope = {
     enable = true;
     
@@ -8,8 +10,9 @@
 
     # You can add keymaps directly inside the plugin config in Nixvim
     keymaps = {
-      "<leader>ff" = "find_files";
-      "<leader>fg" = "find_git";
+      "<leader>sf" = "find_files";
+      "<leader>sg" = "git_files";
+      "<leader>sg" = "grep_string";
       "<leader>m" = "oldfiles";
     };
   };

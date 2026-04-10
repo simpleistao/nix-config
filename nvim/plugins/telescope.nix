@@ -12,7 +12,7 @@
     keymaps = {
       "<leader>sf" = "find_files";
       "<leader>sg" = "git_files";
-      "<leader>sg" = "grep_string";
+      "<leader>sw" = "grep_string";
       "<leader>m" = "oldfiles";
     };
   };

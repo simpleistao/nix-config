@@ -51,35 +51,71 @@ Follow these steps to replicate this environment on a fresh install:
 - **Python**: Python 3 + `pyright`
 - **Node.js**: Required for various LSPs and tools
 
-### CLI Utilities
-- `ripgrep` (rg): Fast searching
-- `fd`: User-friendly `find` replacement
-- `fzf`: Fuzzy finder
-- `htop`: Interactive process viewer
-- `git`: Version control (configured in `home.nix`)
-- `gh`: GitHub CLI
-- `wslu`: WSL integration (browser opening, etc.)
+### 🐳 Docker & Kubernetes Strategy
+We use a **hybrid approach** to manage Docker on Ubuntu WSL:
+- **Client (`docker`)**: Managed by **Nix** via `home.nix`.
+- **Daemon (`docker-ce`)**: Managed by **`apt`** on the host Ubuntu system for stable systemd integration.
+- **K8s Admin Tools**: `kubectl`, `helm`, and `k9s` are all Nix-managed.
+
+See [K8S.md](./K8S.md) for detailed Kubernetes workflows, including local cluster management with `k3d`.
+
+**🏗️ Ephemeral Clusters (k3d)**
+To balance resource usage on a development laptop, we use **k3d** (k3s in Docker). This allows you to:
+- Spin up a 3-node cluster in seconds for testing.
+- Shut it down entirely when not in use to free up 100% of the RAM/CPU.
+- Test production-grade Helm charts locally without the overhead of an "always-on" cluster.
 
 ## ✍️ Neovim (NixVim)
 
-My Neovim is managed entirely via Nix. Key features:
-- **Theme**: TokyoNight
-- **LSP**: Built-in support for Go and Python
-- **Autocomplete**: `nvim-cmp` with LSP and buffer sources
-- **Syntax**: `treesitter` for advanced highlighting
+My Neovim is managed entirely via Nix using **NixVim**. This allows for a modular, declarative configuration where every plugin and setting is tracked by Nix.
 
-### Keybindings
-- `gd`: Go to Definition
-- `K`: Hover Documentation
-- `<leader>rn`: Rename Symbol
-- `<leader>ca`: Code Action
-- `Leader`: Spacebar
+### 🧩 Modular Configuration
+The configuration is organized under the `nvim/` directory, where each major component or plugin has its own Nix file:
+- `nvim/default.nix`: Main entry point, imports all other modules.
+- `nvim/options.nix`: Editor options like line numbers, indentation, etc.
+- `nvim/plugins/`: Directory containing individual plugin configurations (e.g., `lsp.nix`, `treesitter.nix`, `telescope.nix`).
 
-## 🧹 Maintenance
+## 🧹 Maintenance & Rollback
 
-Nix keeps old "generations" so you can roll back. To free up disk space by deleting old versions:
+Nix keeps old "generations" so you can roll back if a change breaks something.
 
+### 🔄 How to Rollback
+If a configuration switch fails or causes issues, you can return to a previous state:
+
+#### Option 1: Using `home-manager`
 ```bash
+# List all generations
+home-manager generations
+
+# Roll back to the previous generation
+home-manager generations --rollback
+```
+
+#### Option 2: Using `nix-env`
+```bash
+# List generations
+nix-env --list-generations
+
+# Roll back to the immediate previous version
+nix-env --rollback
+
+# Switch to a specific generation number
+nix-env --switch-generation <number>
+```
+
+### 🗑️ Cleaning Up (Garbage Collection)
+Nix is "pure," meaning it keeps everything it downloads in the `/nix/store` until you explicitly delete it. This includes temporary tools you run via `nix run nixpkgs#package`.
+
+#### 1. Basic Cleanup
+Removes temporary packages (like those from `nix run`) and orphaned dependencies that aren't part of any current configuration:
+```bash
+nix-collect-garbage
+```
+
+#### 2. Deep Cleanup (Delete Old Generations)
+Removes all previous configuration versions and temporary files. **Note:** This deletes your ability to roll back.
+```bash
+# Deletes all generations except the current one
 nix-collect-garbage -d
 ```
 

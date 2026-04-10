@@ -8,6 +8,8 @@
   ];
 
   home.packages = with pkgs; [
+    # Docker client (Daemon should be managed via 'apt' on Ubuntu/WSL for systemd integration)
+    # Install daemon: sudo apt install docker-ce
     docker
     fd
     fzf
@@ -21,6 +23,11 @@
     pyright
     python3
     ripgrep
+    # Kubernetes & DevOps Tools
+    kubectl
+    kubernetes-helm
+    k3d         # Ephemeral K8s clusters in Docker
+    k9s         # Terminal UI for K8s
     terraform
     tmux
     wslu

@@ -11,6 +11,7 @@
     docker
     fd
     fzf
+    gemini-cli
     gh
     go
     gopls
@@ -20,6 +21,8 @@
     pyright
     python3
     ripgrep
+    terraform
+    tmux
     wslu
   ];
 

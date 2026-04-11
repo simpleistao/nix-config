@@ -16,8 +16,10 @@
     gemini-cli
     gh
     go
+    go-jsonnet
     gopls
     htop
+    jq
     nodejs
     opencode
     pyright
@@ -30,10 +32,16 @@
     k9s         # Terminal UI for K8s
     terraform
     tmux
+    yq
     wslu
   ];
 
   programs.home-manager.enable = true;
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
   # Git Configuration
   programs.git = {

@@ -119,6 +119,9 @@ Removes all previous configuration versions and temporary files. **Note:** This 
 nix-collect-garbage -d
 ```
 
+## Diff between versions
+nix-shell -p nvd --run "nvd diff ~/.local/state/nix/profiles/profile-9-link ~/.local/state/nix/profiles/profile-11-link"
+
 ## 🔄 How to add new software
 
 1. Search for a package at [search.nixos.org](https://search.nixos.org/packages).

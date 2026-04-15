@@ -34,5 +34,11 @@
       action = "<cmd>AerialNext<CR>";
       options = { desc = "Next Symbol"; };
     }
+    {
+      mode = "n";
+      key = "<leader>sa";
+      action = "<cmd>Telescope aerial<CR>";
+      options = { desc = "Telescope aerial"; };
+    }
   ];
 }

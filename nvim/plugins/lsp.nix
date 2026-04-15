@@ -16,8 +16,10 @@
 
     # These handle code navigation
     keymaps.lspBuf = {
-      "gd" = "definition";
-      "gr" = "references";
+      "gd" = "definition";    # Jump to where it's defined
+      "gr" = "references";    # Jump to all callers
+      "gi" = "implementation"; # Jump to implementation (useful for Go interfaces!)
+      "gt" = "type_definition";
       "K" = "hover";
       "<leader>rn" = "rename";  # Ensure quotes are here
       "<leader>ca" = "code_action"; # Ensure quotes are here

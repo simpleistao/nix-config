@@ -2,6 +2,7 @@
 {
   imports = [
     ./options.nix
+    ./autocmds.nix
   ] ++ (
     let
       pluginsDir = ./plugins;
@@ -10,9 +11,4 @@
     in
     lib.mapAttrsToList (name: type: pluginsDir + "/${name}") nixFiles
   );
-
-  programs.nixvim = {
-    enable = true;
-    defaultEditor = true;
-  };
 }

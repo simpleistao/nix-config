@@ -1,11 +1,11 @@
 { pkgs, ... }:
 {
-  programs.nixvim.plugins.fugitive = {
+  plugins.fugitive = {
     enable = true;
   };
 
   # Optional: Handy keybindings for fugitive
-  programs.nixvim.keymaps = [
+  keymaps = [
     {
       mode = "n";
       key = "<leader>gs";

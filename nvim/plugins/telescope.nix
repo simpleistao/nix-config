@@ -1,8 +1,8 @@
 { pkgs, ... }:
 {
-  programs.nixvim.plugins.web-devicons.enable = true;
+  plugins.web-devicons.enable = true;
 
-  programs.nixvim.plugins.telescope = {
+  plugins.telescope = {
     enable = true;
     
     # This enables the fast C-based sorter

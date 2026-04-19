@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  programs.nixvim.plugins.aerial = {
+  plugins.aerial = {
     enable = true;
     settings = {
       # Use both LSP and Treesitter as backends
@@ -15,7 +15,7 @@
     };
   };
 
-  programs.nixvim.keymaps = [
+  keymaps = [
     {
       mode = "n";
       key = "<leader>a";

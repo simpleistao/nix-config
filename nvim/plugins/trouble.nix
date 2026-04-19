@@ -1,9 +1,9 @@
 { pkgs, ... }:
 {
-  programs.nixvim.plugins.trouble = {
+  plugins.trouble = {
     enable = true;
   };
-  programs.nixvim.keymaps = [
+  keymaps = [
     {
       mode = "n";
       key = "<leader>xx";

@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  programs.nixvim.plugins.lsp = {
+  plugins.lsp = {
     enable = true;
     servers = {
       gopls.enable = true;

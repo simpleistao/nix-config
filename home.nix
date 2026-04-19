@@ -33,7 +33,6 @@
     terraform
     tmux
     yq
-    wslu
   ];
 
   programs.home-manager.enable = true;

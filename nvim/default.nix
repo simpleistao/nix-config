@@ -2,6 +2,7 @@
 {
   imports = [
     ./options.nix
+    ./autocmds.nix
   ] ++ (
     let
       pluginsDir = ./plugins;

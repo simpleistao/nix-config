@@ -1,19 +1,12 @@
 { pkgs, ... }:
 {
-  plugins.diffview = {
+  programs.nixvim.plugins.diffview = {
     enable = true;
-    settings = {
-      enhanced_diff_hl = true;
-      view = {
-        merge_tool = {
-          layout = "diff3_mixed";
-          disable_diagnostics = true;
-        };
-      };
-    };
+    # You can add specific settings here later, 
+    # but the defaults are very sensible.
   };
 
-  keymaps = [
+  programs.nixvim.keymaps = [
     {
       mode = "n";
       key = "<leader>gd";

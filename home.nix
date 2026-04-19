@@ -1,13 +1,15 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, ... }: {
   home.username = "tomzhi";
   home.homeDirectory = "/home/tomzhi";
   home.stateVersion = "24.11";
 
-  home.packages = with pkgs; [
-    # Use the standalone nvim package built by our local flake
-    inputs.nvim-flake.packages.${pkgs.system}.default
+  imports = [
+    ./nvim
+  ];
 
-    # Docker client
+  home.packages = with pkgs; [
+    # Docker client (Daemon should be managed via 'apt' on Ubuntu/WSL for systemd integration)
+    # Install daemon: sudo apt install docker-ce
     docker
     fd
     fzf
@@ -26,8 +28,8 @@
     # Kubernetes & DevOps Tools
     kubectl
     kubernetes-helm
-    k3d
-    k9s
+    k3d         # Ephemeral K8s clusters in Docker
+    k9s         # Terminal UI for K8s
     terraform
     tmux
     yq
@@ -46,9 +48,9 @@
     enable = true;
     settings = {
       diff.tool = "nvimdiff";
-      difftool.prompt = false;
+      difftool.prompt = false; # Optional: skips the "Launch nvimdiff?" prompt
       "difftool \"nvimdiff\"" = {
-        cmd = "nvim -d \"$LOCAL\" \"$REMOTE\"";
+      cmd = "nvim -d \"$LOCAL\" \"$REMOTE\"";
       };
       alias = {
         d = "difftool";
@@ -67,6 +69,7 @@
       init = {
         defaultBranch = "main";
       };
+      # Use gh as the credential helper for GitHub
       credential."https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential";
       credential."https://gist.github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential";
     };
@@ -84,8 +87,7 @@
       hms = "home-manager switch --flake ~/.config/home-manager --impure";
       g = "git";
       gp = "git push -u origin main";
-      ls = "ls --color=auto";
-      ll = "ls -lah --color=auto";
+      ll = "ls -lah";
       nv = "nvim";
     };
   };

@@ -69,46 +69,7 @@ To balance resource usage on a development laptop, we use **k3d** (k3s in Docker
 
 My Neovim is managed entirely via Nix using **NixVim**. This allows for a modular, declarative configuration where every plugin and setting is tracked by Nix.
 
-### 🧩 Standalone Usage (Work/Non-HM Setup)
-The `nvim/` directory is a self-contained Nix flake. This allows you to use my Neovim configuration on any machine with Nix installed, even without Home Manager.
-
-**Run immediately:**
-```bash
-nix run ./nvim
-```
-
-**Install permanently:**
-To add the `nvim` command to your PATH:
-```bash
-nix profile install ./nvim
-```
-
-**Update:**
-If you've installed it via `nix profile`, you can update it by running:
-```bash
-nix profile upgrade 0  # Replace '0' with the index from 'nix profile list' if needed
-```
-
-### 🛠️ Applying Changes to Home Manager
-If you are using this configuration via **Home Manager** on your main machine, follow these steps to apply changes made inside the `nvim/` directory:
-
-1. **Stage your changes**:
-   ```bash
-   git add .
-   ```
-
-2. **Update the root lockfile**:
-   Since the root flake treats `nvim/` as an input, you must tell it to take a new "snapshot":
-   ```bash
-   nix flake lock --update-input nvim-flake
-   ```
-
-3. **Apply the configuration**:
-   ```bash
-   home-manager switch --flake . --impure
-   ```
-
-### 🛠️ Modular Configuration
+### 🧩 Modular Configuration
 The configuration is organized under the `nvim/` directory, where each major component or plugin has its own Nix file:
 - `nvim/default.nix`: Main entry point, imports all other modules.
 - `nvim/options.nix`: Editor options like line numbers, indentation, etc.

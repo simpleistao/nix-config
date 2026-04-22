@@ -1,8 +1,9 @@
-{ pkgs, ... }:
-{
-  programs.nixvim.plugins.treesitter = {
-    enable = true;
-    settings.indent.enable = true;
-    settings.highlight.enable = true;
-  };
+{ pkgs, ... }: {
+  plugins = [ (pkgs.vimPlugins.nvim-treesitter.withAllGrammars) ];
+  lua = ''
+    require('nvim-treesitter.configs').setup({
+      highlight = { enable = true },
+      indent = { enable = true },
+    })
+  '';
 }

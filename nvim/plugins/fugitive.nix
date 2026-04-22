@@ -1,22 +1,7 @@
-{ pkgs, ... }:
-{
-  programs.nixvim.plugins.fugitive = {
-    enable = true;
-  };
-
-  # Optional: Handy keybindings for fugitive
-  programs.nixvim.keymaps = [
-    {
-      mode = "n";
-      key = "<leader>gs";
-      action = "<cmd>Git<CR>";
-      options = { desc = "Git Status"; };
-    }
-    {
-      mode = "n";
-      key = "<leader>gb";
-      action = "<cmd>Git blame<CR>";
-      options = { desc = "Git Blame"; };
-    }
-  ];
+{ pkgs, ... }: {
+  plugins = [ pkgs.vimPlugins.vim-fugitive ];
+  lua = ''
+    vim.keymap.set("n", "<leader>gs", "<cmd>Git<CR>", { desc = "Git Status" })
+    vim.keymap.set("n", "<leader>gb", "<cmd>Git blame<CR>", { desc = "Git Blame" })
+  '';
 }

@@ -1,4 +1,6 @@
-{ pkgs, ... }:
-{
-  programs.nixvim.plugins.lualine.enable = true;
+{ pkgs, ... }: {
+  plugins = [ pkgs.vimPlugins.lualine-nvim ];
+  lua = ''
+    require('lualine').setup()
+  '';
 }

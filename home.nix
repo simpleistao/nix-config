@@ -4,10 +4,10 @@
   home.stateVersion = "24.11";
 
   imports = [
-    ./nvim
   ];
 
   home.packages = with pkgs; [
+    (import ./nvim { inherit pkgs; })
     # Docker client (Daemon should be managed via 'apt' on Ubuntu/WSL for systemd integration)
     # Install daemon: sudo apt install docker-ce
     docker

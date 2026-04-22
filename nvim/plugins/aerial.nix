@@ -1,44 +1,17 @@
-{ pkgs, ... }:
-{
-  programs.nixvim.plugins.aerial = {
-    enable = true;
-    settings = {
-      # Use both LSP and Treesitter as backends
-      backends = [ "lsp" "treesitter" ];
-      # Show the symbol tree on the right
+{ pkgs, ... }: {
+  plugins = [ pkgs.vimPlugins.aerial-nvim ];
+  lua = ''
+    require('aerial').setup({
+      backends = { "lsp", "treesitter" },
       layout = {
-        min_width = 30;
-        default_direction = "right";
-      };
-      # Close aerial when it's the last window open
-      close_on_select = false;
-    };
-  };
-
-  programs.nixvim.keymaps = [
-    {
-      mode = "n";
-      key = "<leader>a";
-      action = "<cmd>AerialToggle!<CR>";
-      options = { desc = "Toggle Aerial (Outline)"; };
-    }
-    {
-      mode = "n";
-      key = "{";
-      action = "<cmd>AerialPrev<CR>";
-      options = { desc = "Prev Symbol"; };
-    }
-    {
-      mode = "n";
-      key = "}";
-      action = "<cmd>AerialNext<CR>";
-      options = { desc = "Next Symbol"; };
-    }
-    {
-      mode = "n";
-      key = "<leader>sa";
-      action = "<cmd>Telescope aerial<CR>";
-      options = { desc = "Telescope aerial"; };
-    }
-  ];
+        min_width = 30,
+        default_direction = "right",
+      },
+      close_on_select = false,
+    })
+    vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aerial (Outline)" })
+    vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { desc = "Prev Symbol" })
+    vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { desc = "Next Symbol" })
+    vim.keymap.set("n", "<leader>sa", "<cmd>Telescope aerial<CR>", { desc = "Telescope aerial" })
+  '';
 }

@@ -8,14 +8,9 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = { nixpkgs, home-manager, nixvim, ... }:
+  outputs = { nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
       # We "import" nixpkgs here to inject the allowUnfree configuration
@@ -29,7 +24,6 @@
 
         modules = [
           ./home.nix
-          nixvim.homeModules.nixvim
         ];
       };
     };

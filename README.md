@@ -65,15 +65,21 @@ To balance resource usage on a development laptop, we use **k3d** (k3s in Docker
 - Shut it down entirely when not in use to free up 100% of the RAM/CPU.
 - Test production-grade Helm charts locally without the overhead of an "always-on" cluster.
 
-## ✍️ Neovim (NixVim)
+## ✍️ Neovim
 
-My Neovim is managed entirely via Nix using **NixVim**. This allows for a modular, declarative configuration where every plugin and setting is tracked by Nix.
+My Neovim is managed declaratively via Nix using a custom modular wrapper. This ensures a consistent environment regardless of the system, even if it doesn't use Home Manager.
 
 ### 🧩 Modular Configuration
-The configuration is organized under the `nvim/` directory, where each major component or plugin has its own Nix file:
-- `nvim/default.nix`: Main entry point, imports all other modules.
-- `nvim/options.nix`: Editor options like line numbers, indentation, etc.
-- `nvim/plugins/`: Directory containing individual plugin configurations (e.g., `lsp.nix`, `treesitter.nix`, `telescope.nix`).
+The configuration is organized under the `nvim/` directory:
+- `nvim/default.nix`: The main engine that assembles the configuration and plugins.
+- `nvim/options.nix` & `nvim/autocmds.nix`: Core editor settings and automation.
+- `nvim/plugins/`: Individual Nix files for each plugin (LSP, Treesitter, Telescope, etc.).
+
+### 🔓 Local Overrides (The Escape Hatch)
+For maximum flexibility and rapid iteration, the configuration automatically looks for and loads:
+`~/.config/nvim/local.lua`
+
+This allows you to update machine-specific settings or test new configurations instantly without needing to run `home-manager switch`. If this file exists, it is loaded **last**, allowing it to override any settings defined in the Nix configuration. This file is ignored by Git to keep your environment-specific secrets or preferences private.
 
 ## 🧹 Maintenance & Rollback
 

@@ -58,7 +58,7 @@
         co = "checkout";
         br = "branch";
         ci = "commit";
-        last = "log -1 HEAD";
+        lg = "log -1 HEAD";
         unstage = "reset HEAD --";
       };
       user = {

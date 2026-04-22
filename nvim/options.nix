@@ -18,7 +18,6 @@
   -- Buffers
   vim.keymap.set("n", "[b", ":bprevious<CR>", { desc = "Prev buffer" })
   vim.keymap.set("n", "]b", ":bnext<CR>", { desc = "Next buffer" })
-  vim.keymap.set("n", "<leader>bd", ":bdelete<CR>", { desc = "Delete buffer" })
   
   -- Edit config
   vim.keymap.set("n", "<leader>vc", "<cmd>e " .. vim.env.MYVIMRC .. "<CR>", { desc = "Edit config" })

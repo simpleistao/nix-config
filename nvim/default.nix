@@ -1,30 +1,35 @@
 { pkgs, lib, ... }:
 let
-  # Basic files
-  baseConfigs = [
-    ./options.nix
-    ./autocmds.nix
-  ];
+  # Import base configs as bare strings
+  options = import ./options.nix { inherit pkgs; };
+  autocmds = import ./autocmds.nix { inherit pkgs; };
 
-  # Plugins from the plugins directory
+  # Plugins from the plugins directory, filtered by type and suffix
   pluginsDir = ./plugins;
-  pluginFiles = builtins.attrNames (builtins.readDir pluginsDir);
-  pluginPaths = map (name: pluginsDir + "/${name}") pluginFiles;
+  pluginFiles = lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".nix" name) (builtins.readDir pluginsDir);
+  pluginPaths = lib.mapAttrsToList (name: type: pluginsDir + "/${name}") pluginFiles;
 
-  allPaths = baseConfigs ++ pluginPaths;
+  # Import plugin configs
+  importedPlugins = map (path: import path { inherit pkgs lib; }) pluginPaths;
 
-  # Import everything
-  importedConfigs = map (path: import path { inherit pkgs lib; }) allPaths;
+  # Flatten plugins and concatenate lua
+  allPlugins = lib.flatten (map (cfg: cfg.plugins or [ ]) importedPlugins);
+  pluginsLua = lib.concatStringsSep "\n" (map (cfg: cfg.lua or "") importedPlugins);
 
-  # Flatten all plugins and concatenate all lua strings
-  allPlugins = lib.flatten (map (cfg: cfg.plugins or [ ]) importedConfigs);
-  allLua = lib.concatStringsSep "\n" (map (cfg: cfg.lua or "") importedConfigs);
+  fullLua = lib.concatStringsSep "\n" [
+    "vim.env.MYVIMRC = \"${toString ./.}\""
+    options
+    autocmds
+    pluginsLua
+  ];
 in
 pkgs.neovim.override {
   configure = {
-    customRC = allLua;
-    packages.myVimPackage = {
-      start = allPlugins;
-    };
+    customRC = ''
+lua << EOF
+${fullLua}
+EOF
+    '';
+    packages.myPlugins.start = allPlugins;
   };
 }

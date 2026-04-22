@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   plugins = [ pkgs.vimPlugins.gitsigns-nvim ];
   lua = ''
-    require('gitsigns').setup({
+    require("gitsigns").setup({
       on_attach = function(bufnr)
         local gs = package.loaded.gitsigns
 
@@ -12,23 +12,15 @@
         end
 
         -- Navigation
-        map('n', ']c', function()
-          if vim.wo.diff then return ']c' end
-          vim.schedule(function() gs.next_hunk() end)
-          return '<Ignore>'
-        end, {expr=true})
-
-        map('n', '[c', function()
-          if vim.wo.diff then return '[c' end
-          vim.schedule(function() gs.prev_hunk() end)
-          return '<Ignore>'
-        end, {expr=true})
+        map("n", "]c", gs.next_hunk)
+        map("n", "[c", gs.prev_hunk)
 
         -- Actions
-        map('n', '<leader>hs', gs.stage_hunk)
-        map('n', '<leader>hr', gs.reset_hunk)
-        map('n', '<leader>hp', gs.preview_hunk)
-        map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+        map("n", "<leader>gs", gs.stage_hunk)
+        map("n", "<leader>gr", gs.reset_hunk)
+        map("n", "<leader>gp", gs.preview_hunk)
+        map("n", "<leader>gl", gs.toggle_current_line_blame)
+        map("n", "<leader>gB", gs.blame_line)
       end
     })
   '';

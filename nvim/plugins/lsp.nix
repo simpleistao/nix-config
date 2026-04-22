@@ -1,44 +1,46 @@
 { pkgs, ... }: {
-  plugins = [ ]; # No plugin needed for native LSP in 0.11
+  plugins = [ ];
   lua = ''
-    -- Native LSP config (Neovim 0.11+)
-    if vim.lsp.config then
-      vim.lsp.config.enable('gopls', {})
-      vim.lsp.config.enable('pyright', {})
-    end
-
-    -- Diagnostic navigation
-    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
-    vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Next diagnostic" })
-    vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = "Open diagnostic float" })
-
-    -- LSP keymaps
-    vim.api.nvim_create_autocmd('LspAttach', {
-      callback = function(args)
-        local bufnr = args.buf
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
+    -- LSP keymaps and setup
+    vim.api.nvim_create_autocmd("LspAttach", {
+      callback = function(ev)
+        local bufnr = ev.buf
+        local function map(mode, l, r, desc)
+          vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
+        end
         
-        local opts = { buffer = bufnr }
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-        vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+        -- Navigation
+        map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+        map("n", "gr", vim.lsp.buf.references, "Go to references")
+        map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
+        map("n", "gt", vim.lsp.buf.type_definition, "Go to type definition")
+        map("n", "K", vim.lsp.buf.hover, "Hover documentation")
+        map("n", "<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+        map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
+
+        -- Diagnostic navigation
+        map("n", "[d", vim.diagnostic.goto_prev, "Previous diagnostic")
+        map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
+        map("n", "gl", vim.diagnostic.open_float, "Open diagnostic float")
       end,
     })
 
     -- LspInfo command
-    vim.api.nvim_create_user_command('LspInfo', function()
-      local clients = vim.lsp.get_clients()
-      if #clients == 0 then
-        print("No active LSP clients")
-        return
-      end
-      for _, client in ipairs(clients) do
-        print(string.format("Client: %s (ID: %d)", client.name, client.id))
-      end
-    end, {})
+    vim.api.nvim_create_user_command("LspInfo", "checkhealth lsp", {})
+
+    -- Setup servers with capabilities
+    local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    
+    vim.lsp.config("gopls", {
+      cmd = { "${pkgs.gopls}/bin/gopls" },
+      filetypes = { "go", "gomod", "gowork", "gotmpl" },
+      capabilities = capabilities,
+    })
+    vim.lsp.config("pyright", {
+      cmd = { "${pkgs.pyright}/bin/pyright-langserver", "--stdio" },
+      filetypes = { "python" },
+      capabilities = capabilities,
+    })
+    vim.lsp.enable({"gopls", "pyright"})
   '';
 }

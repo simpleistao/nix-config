@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   home.username = "tomzhi";
   home.homeDirectory = "/home/tomzhi";
   home.stateVersion = "24.11";
@@ -7,7 +7,7 @@
   ];
 
   home.packages = with pkgs; [
-    (import ./nvim { inherit pkgs; })
+    (import ./nvim { inherit pkgs lib; })
     # Docker client (Daemon should be managed via 'apt' on Ubuntu/WSL for systemd integration)
     # Install daemon: sudo apt install docker-ce
     docker

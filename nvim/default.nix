@@ -21,6 +21,13 @@ let
     options
     autocmds
     pluginsLua
+    ''
+      -- Load local config if it exists
+      local local_config = vim.fn.expand("~/.config/nvim/local.lua")
+      if vim.fn.filereadable(local_config) == 1 then
+          dofile(local_config)
+      end
+    ''
   ];
 in
 pkgs.neovim.override {

@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: {
+{ pkgs, unstablePkgs, lib, ... }: {
   home.username = "tomzhi";
   home.homeDirectory = "/home/tomzhi";
   home.stateVersion = "24.11";
@@ -13,7 +13,7 @@
     docker
     fd
     fzf
-    gemini-cli
+    unstablePkgs.gemini-cli
     gh
     go
     go-jsonnet

@@ -13,17 +13,15 @@
   outputs = { nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
-      # We "import" nixpkgs here to inject the allowUnfree configuration
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
     in {
       homeConfigurations."tomzhi" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+        pkgs = nixpkgs.legacyPackages.${system};
 
         modules = [
           ./home.nix
+          {
+            nixpkgs.config.allowUnfree = true;
+          }
         ];
       };
     };

@@ -13,7 +13,6 @@
     docker
     fd
     fzf
-    unstablePkgs.gemini-cli
     gh
     go
     go-jsonnet

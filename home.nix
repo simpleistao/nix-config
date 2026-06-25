@@ -24,6 +24,7 @@
     pyright
     python3
     ripgrep
+    unstablePkgs.antigravity-cli
     # Kubernetes & DevOps Tools
     kubectl
     kubernetes-helm
